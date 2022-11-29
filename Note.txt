@@ -1,0 +1,55 @@
+Done :
+1. tampilan carusol jangan sampai paling atas
+3. gambar carosol harus sudah masuk
+4. Leave Mesage. icon x menjadi Approve, icon V menjadi Draft
+7. Fungsi artikel harus ada editornya
+5. Semua menu atas, tengah dan bawah selalu memanggil record halaman dalam tabel
+6. Fungsi halaman harus ada editornya,ambil source dari travelsafe.id
+8. Fungsi artikel, ditambahkan 1 field keyword dan tanggal
+12. Bikin Tabel Sosial Media
+
+Tampilan Website
+2. Menu atas, dicek recordnya ke tabel menu atas
+9. Bikin tabel menu bawah
+10. Tabel menudepan diubah menjadi menuatas
+11. Bikin tabel baru : menu_atas_call, menu_tengah_call,menu_bawah_call
+13. Bikin Tabel dan Fungsi Company Profile
+
+Penjelasan
+website akan punya 3 tabel menu posisi yaitu: menu atas, menu tengah dan menu bawah
+menu atas bisa parent chield
+menu tengah sudah dihardcode posisinya 1 s/d 5
+menu bawah adalah single record
+
+contoh menu bawah: Informasi (taruh di paling kiri)
+
+contoh menu_atas Hosting Terbaik>>Clod email hosting | Reseller>>SSD Enterprises
+
+CPANEL
+http://180.235.149.186:2082/cpsess8021773990/frontend/paper_lantern/index.html?login=1&post_login=12512583010273
+u: asurans3
+P: W2e8lwb45C
+
+
+Skip : 
+
+Bikin tabel baru,  tugasnya menyimpan relasi dari menu atas, menu tengah dan menu bawah terhadap tabel halaman
+menu_atas_call
+idx_menu_atas_call
+idx_menu_atas
+idx_halaman
+
+menu_tengah_call
+idx_menu_tengah_call
+idx_menu_tengah
+idx_halaman
+
+
+menu_bawah_call
+idx_menu_bawah_call
+idx_menu_bawah
+idx_halaman
+
+
+
+

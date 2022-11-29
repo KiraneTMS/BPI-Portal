@@ -1,0 +1,120 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Jabatan extends CI_Controller
+{
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('Jabatan_model');
+	}
+
+	public function index()
+	{
+		check_rule(false, "is_read", true);
+
+		$data = [
+			"title" => "jabatan",
+			'data' => dbget("tb_jabatan")->result_array()
+		];
+		view('templates/header', $data);
+		view('templates/sidebar');
+		view('templates/topbar');
+		view('jabatan/index', $data);
+		view('templates/footer');
+	}
+
+	public function datatable()
+	{
+		check_rule(false, "is_read", true);
+		$show = [];
+		// $i = post("start") + 1;
+		foreach ($this->Jabatan_model->datatable() as $key) {
+			$data = [];
+			// $data[] = $i++;
+			$data[] = '<input type="radio" name="select"></input>';
+			$data[] = $key['nama_jabatan'];
+			$data[] = ($key['flag_status'] == '1') ? badge('Aktif') : badge('Tidak Aktif', 'danger');
+			array_push($show, $data);
+		}
+		$data = [
+			"draw" => post("draw"),
+			"data" => $show,
+			"recordsFiltered" => $this->Jabatan_model->get_filtered_data(),
+			"recordsTotal" => $this->Jabatan_model->get_all_data()
+		];
+		echo json_encode($data, JSON_PRETTY_PRINT);
+		// echo json_encode($_POST, JSON_PRETTY_PRINT);
+	}
+
+	public function tambah()
+	{
+		check_rule(false, "is_create", true);
+		set_rules("text_jabatan", "Text jabatan", "required");
+		set_rules("answer_jabatan", "Answer jabatan", "required");
+		set_rules("sort_jabatan", "Sort jabatan", "required");
+
+		if ($this->form_validation->run() == False) {
+			$data = [
+				"title" => "jabatan"
+			];
+			view('templates/header', $data);
+			view('templates/sidebar');
+			view('templates/topbar');
+			view('jabatan/tambah');
+			view('templates/footer');
+		} else {
+			$data = [
+				"text_jabatan" => post("text_jabatan"),
+				"answer_jabatan" => post("answer_jabatan"),
+				"sort_jabatan" => post("sort_jabatan"),
+				"is_active" => (post('is_active') == "1") ? "1" : "0",
+			];
+			dbinsert("jabatan", $data);
+			set_flashdata("msg", "<script>Swal.fire('Success','Data Berhasil Dimasukan', 'success')</script>");
+			redirect(base_url("jabatan/index"));
+		}
+	}
+
+	public function update($id)
+	{
+		check_rule(false, "is_update", true);
+		set_rules("text_jabatan", "Text jabatan", "required");
+		set_rules("answer_jabatan", "Answer jabatan", "required");
+		set_rules("sort_jabatan", "Sort jabatan", "required");
+
+		if ($this->form_validation->run() == False) {
+			$data = [
+				"title" => "jabatan",
+				"data" => dbgetwhere("jabatan", ["id_jabatan" => $id])->row_array()
+			];
+			view('templates/header', $data);
+			view('templates/sidebar');
+			view('templates/topbar');
+			view('jabatan/update', $data);
+			view('templates/footer');
+		} else {
+			$data = [
+				"text_jabatan" => post("text_jabatan"),
+				"answer_jabatan" => post("answer_jabatan"),
+				"sort_jabatan" => post("sort_jabatan"),
+				"is_active" => (post('is_active') == "1") ? "1" : "0",
+			];
+			dbupdate("jabatan", $data, ["id_jabatan" => $id]);
+			set_flashdata("msg", "<script>Swal.fire('Success','Data Berhasil Diubah', 'success')</script>");
+			redirect(base_url("jabatan/index"));
+		}
+	}
+
+
+
+
+	public function delete($id)
+	{
+		check_rule(false, "is_delete", true);
+		dbdelete("jabatan", ['id_jabatan' => $id]);
+		set_flashdata("msg", swalfire('Data Berhasil Dihapus', 'success'));
+		redirect(base_url("jabatan/index"));
+	}
+}

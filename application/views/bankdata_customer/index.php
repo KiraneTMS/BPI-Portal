@@ -4,7 +4,7 @@
 
         <h6 class="m-0 font-weight-bold text-dark h4">Bank Data Customer
             <?php if (check_rule(false, "is_create")) : ?>
-                <a href="<?= base_url("divisi/tambah"); ?>" class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm float-right">
+                <a href="<?= base_url("bankdata_customer/tambah"); ?>" class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm float-right">
                     <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data
                 </a>
             <?php endif; ?>
@@ -115,6 +115,7 @@
                             "saveState": true,
                             "processing": true,
                             "serverSide": true,
+                            "lengthMenu": [3, 5, 10, 20, 50, 100, 200],
                             "ajax": {
                                 "url": "<?= base_url("bankdata_customer/datatable"); ?>",
                                 "type": "POST",

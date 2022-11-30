@@ -23,10 +23,9 @@ class Bankdata_customer extends CI_Controller
 		$path 		= 'uploads/';
 		$json 		= [];
 		$this->upload_config($path);
-		if (!$this->upload->do_upload('file')) {
-			$json = [
-				'error_message' => $this->upload->display_errors(),
-			];
+		if (!$this->upload->do_upload('import_excel')) {
+			set_flashdata("msg", swalfire($this->upload->display_errors(), 'error'));
+			redirect(base_url("bankdata_customer/index"));
 		} else {
 			$file_data 	= $this->upload->data();
 			$file_name 	= $path . $file_data['file_name'];
@@ -43,30 +42,117 @@ class Bankdata_customer extends CI_Controller
 			foreach ($sheet_data as $key => $val) {
 				if ($key != 0) {
 					$list[] = [
-						'name'					=> $val[0],
-						'country_code'			=> $val[1],
-						'mobile'				=> $val[2],
+						// "id" => $val[0],
+						// "created_at" => $val[1],
+						// "updated_at" => $val[2],
+						"NumberCard" => $val[3],
+						"Bank" => $val[4],
+						"TypeCard" => $val[5],
+						"NameCustomer" => $val[6],
+						"PIC" => $val[7],
+						"AssignmentDate" => $val[8],
+						"ExpireDate" => $val[9],
+						"DateOfBirth" => $val[10],
+						"OpenDate" => $val[11],
+						"WODate" => $val[12],
+						"LastPayDate" => $val[13],
+						"LastTransactionDate" => $val[14],
+						"LastPayment" => $val[15],
+						"LastTransactionNominal" => $val[16],
+						"Limit" => $val[17],
+						"Principal" => $val[18],
+						"MinPay" => $val[19],
+						"OSBalance" => $val[20],
+						"Address1" => $val[21],
+						"Address2" => $val[22],
+						"Address3" => $val[23],
+						"Address4" => $val[24],
+						"City" => $val[25],
+						"OfficeName" => $val[26],
+						"OfficeAddress1" => $val[27],
+						"OfficeAddress2" => $val[28],
+						"OfficeAddress3" => $val[29],
+						"OfficeAddress4" => $val[30],
+						"Phone1" => $val[31],
+						"Phone2" => $val[32],
+						"HomePhone1" => $val[33],
+						"HomePhone2" => $val[34],
+						"OfficePhone1" => $val[35],
+						"OfficePhone2" => $val[36],
+						"ECPhone1" => $val[37],
+						"ECPhone2" => $val[38],
+						"OtherNumber" => $val[39],
+						"ECName" => $val[40],
+						"ECName2" => $val[41],
+						"StatusEC" => $val[42],
+						"StatusEC2" => $val[43],
+						"MotherName" => $val[44],
+						"Sex" => $val[45],
+						"Email" => $val[46],
+						"VirtualAccount" => $val[47],
+						"VirtualAccountName" => $val[48],
+						"Komoditi" => $val[49],
+						"KomoditiType" => $val[50],
+						"Produsen" => $val[51],
+						"Model" => $val[52],
+						"LoanTerm" => $val[53],
+						"InstallmentAlreadyPaid" => $val[54],
+						"MonthlyPaymentNominal" => $val[55],
+						"DPD" => $val[56],
+						"Bucket" => $val[57],
+						"BillingNoPenalty" => $val[58],
+						"DendaBelumDibayar" => $val[59],
+						"LastVisitDate" => $val[60],
+						"LastVisitResult" => $val[61],
+						"LastReport" => $val[62],
+						"LastVisitAddress" => $val[63],
+						"OTSOffer" => $val[64],
+						"OtherData1" => $val[65],
+						"OtherData2" => $val[66],
+						"OtherData3" => $val[67],
+						"OtherData4" => $val[68],
+						"OtherData5" => $val[69],
+						"PermanentMessage" => $val[70],
+						"Deskcoll_id" => $val[71],
+						"IsDeletedByAdmin" => $val[72],
+						"Report" => $val[73],
+						"Action" => $val[74],
+						"ReportDate" => $val[75],
+						"PTPDate" => $val[76],
+						"PTPAmount" => $val[77],
+						"PaidDate" => $val[78],
+						"PaidAmount" => $val[79],
 					];
 				}
 			}
 			if (file_exists($file_name))
 				unlink($file_name);
-			if (count($list) > 0) {
-				$result 	= $this->user->add_batch($list);
-				if ($result) {
-					$json = [
-						'success_message' 	=> "All Entries are imported successfully.",
-					];
-				} else {
-					$json = [
-						'error_message' 	=> "Something went wrong. Please try again.",
-					];
-				}
-			} else {
-				$json = [
-					'error_message' => "No new record is found.",
-				];
+			// echo count($list);
+			// dd($list);
+
+			foreach ($list as $row) {
+				dbinsert('bankdata_customer', $row);
+				// dd($row);
 			}
+			set_flashdata("msg", swalfire(count($list) . ' Data Berhasil DiImport'));
+			redirect(base_url("bankdata_customer/index"));
+
+			// if (count($list) > 0) {
+			// 	$result 	= $this->user->add_batch($list);
+			// 	if ($result) {
+			// 		$json = [
+			// 			'success_message' 	=> "All Entries are imported successfully.",
+			// 		];
+			// 	} else {
+			// 		$json = [
+			// 			'error_message' 	=> "Something went wrong. Please try again.",
+			// 		];
+			// 	}
+			// } else {
+			// 	$json = [
+			// 		'error_message' => "No new record is found.",
+			// 	];
+			// }
 		}
 		echo json_encode($json);
 	}
@@ -109,7 +195,7 @@ class Bankdata_customer extends CI_Controller
 		$i = (post('order')[0]['column'] == 0) ? ((post('order')[0]['dir'] == "asc") ? post("start") + 1 : $this->Bankdata_customer_model->get_all_data() - post("start")) : "-";
 		foreach ($this->Bankdata_customer_model->datatable() as $key) {
 			$data = [];
-			// $data[] = (post('order')[0]['column'] == 0) ? ((post('order')[0]['dir'] == "asc") ? $i++ : $i--) : "-";
+			$data[] = (post('order')[0]['column'] == 0) ? ((post('order')[0]['dir'] == "asc") ? $i++ : $i--) : "-";
 			// $data[] = $key['no_tx_penjualan'];
 			// $data[] = date("d-m-Y", strtotime($key['tanggal_transaksi_penjualan']));
 			// $data[] = $key['nama_customer'];
@@ -122,6 +208,10 @@ class Bankdata_customer extends CI_Controller
 			// $data[] = $key['nama_status_penjualan'];
 			// $data[] = $key['keterangan_penjualan'];
 
+			$data[] = '<div class="form-check">
+				<input class="form-check-input checkbox" data-id="'.$key['id'].'" type="checkbox" value="" id="selectall">
+				<label class="form-check-label" for="selectall"></label>
+			</div>';
 			$data[] = $key['NumberCard'];
 			$data[] = $key['Bank'];
 			$data[] = $key['TypeCard'];
@@ -246,83 +336,83 @@ class Bankdata_customer extends CI_Controller
 	public function tambah()
 	{
 		check_rule(false, "is_create", true);
-		set_rules("NumberCard","NumberCard", "required");
-		set_rules("Bank","Bank", "required");
-		set_rules("TypeCard","TypeCard", "required");
-		set_rules("NameCustomer","NameCustomer", "required");
-		set_rules("PIC","PIC", "required");
-		set_rules("AssignmentDate","AssignmentDate", "required");
-		set_rules("ExpireDate","ExpireDate", "required");
-		set_rules("DateOfBirth","DateOfBirth", "required");
-		set_rules("OpenDate","OpenDate", "required");
-		set_rules("WODate","WODate", "required");
-		set_rules("LastPayDate","LastPayDate", "required");
-		set_rules("LastTransactionDate","LastTransactionDate", "required");
-		set_rules("LastPayment","LastPayment", "required");
-		set_rules("LastTransactionNominal","LastTransactionNominal", "required");
-		set_rules("Limit","Limit", "required");
-		set_rules("Principal","Principal", "required");
-		set_rules("MinPay","MinPay", "required");
-		set_rules("OSBalance","OSBalance", "required");
-		set_rules("Address1","Address1", "required");
-		set_rules("Address2","Address2", "required");
-		set_rules("Address3","Address3", "required");
-		set_rules("Address4","Address4", "required");
-		set_rules("City","City", "required");
-		set_rules("OfficeName","OfficeName", "required");
-		set_rules("OfficeAddress1","OfficeAddress1", "required");
-		set_rules("OfficeAddress2","OfficeAddress2", "required");
-		set_rules("OfficeAddress3","OfficeAddress3", "required");
-		set_rules("OfficeAddress4","OfficeAddress4", "required");
-		set_rules("Phone1","Phone1", "required");
-		set_rules("Phone2","Phone2", "required");
-		set_rules("HomePhone1","HomePhone1", "required");
-		set_rules("HomePhone2","HomePhone2", "required");
-		set_rules("OfficePhone1","OfficePhone1", "required");
-		set_rules("OfficePhone2","OfficePhone2", "required");
-		set_rules("ECPhone1","ECPhone1", "required");
-		set_rules("ECPhone2","ECPhone2", "required");
-		set_rules("OtherNumber","OtherNumber", "required");
-		set_rules("ECName","ECName", "required");
-		set_rules("ECName2","ECName2", "required");
-		set_rules("StatusEC","StatusEC", "required");
-		set_rules("StatusEC2","StatusEC2", "required");
-		set_rules("MotherName","MotherName", "required");
-		set_rules("Sex","Sex", "required");
-		set_rules("Email","Email", "required");
-		set_rules("VirtualAccount","VirtualAccount", "required");
-		set_rules("VirtualAccountName","VirtualAccountName", "required");
-		set_rules("Komoditi","Komoditi", "required");
-		set_rules("KomoditiType","KomoditiType", "required");
-		set_rules("Produsen","Produsen", "required");
-		set_rules("Model","Model", "required");
-		set_rules("LoanTerm","LoanTerm", "required");
-		set_rules("InstallmentAlreadyPaid","InstallmentAlreadyPaid", "required");
-		set_rules("MonthlyPaymentNominal","MonthlyPaymentNominal", "required");
-		set_rules("DPD","DPD", "required");
-		set_rules("Bucket","Bucket", "required");
-		set_rules("BillingNoPenalty","BillingNoPenalty", "required");
-		set_rules("DendaBelumDibayar","DendaBelumDibayar", "required");
-		set_rules("LastVisitDate","LastVisitDate", "required");
-		set_rules("LastVisitResult","LastVisitResult", "required");
-		set_rules("LastReport","LastReport", "required");
-		set_rules("LastVisitAddress","LastVisitAddress", "required");
-		set_rules("OTSOffer","OTSOffer", "required");
-		set_rules("OtherData1","OtherData1", "required");
-		set_rules("OtherData2","OtherData2", "required");
-		set_rules("OtherData3","OtherData3", "required");
-		set_rules("OtherData4","OtherData4", "required");
-		set_rules("OtherData5","OtherData5", "required");
-		set_rules("PermanentMessage","PermanentMessage", "required");
-		set_rules("Deskcoll_id","Deskcoll_id", "required");
-		set_rules("IsDeletedByAdmin","IsDeletedByAdmin", "required");
-		set_rules("Report","Report", "required");
-		set_rules("Action","Action", "required");
-		set_rules("ReportDate","ReportDate", "required");
-		set_rules("PTPDate","PTPDate", "required");
-		set_rules("PTPAmount","PTPAmount", "required");
-		set_rules("PaidDate","PaidDate", "required");
-		set_rules("PaidAmount","PaidAmount", "required");
+		set_rules("NumberCard", "NumberCard", "required");
+		set_rules("Bank", "Bank", "required");
+		set_rules("TypeCard", "TypeCard", "required");
+		set_rules("NameCustomer", "NameCustomer", "required");
+		set_rules("PIC", "PIC", "required");
+		set_rules("AssignmentDate", "AssignmentDate", "required");
+		set_rules("ExpireDate", "ExpireDate", "required");
+		set_rules("DateOfBirth", "DateOfBirth", "required");
+		set_rules("OpenDate", "OpenDate", "required");
+		set_rules("WODate", "WODate", "required");
+		set_rules("LastPayDate", "LastPayDate", "required");
+		set_rules("LastTransactionDate", "LastTransactionDate", "required");
+		set_rules("LastPayment", "LastPayment", "required");
+		set_rules("LastTransactionNominal", "LastTransactionNominal", "required");
+		set_rules("Limit", "Limit", "required");
+		set_rules("Principal", "Principal", "required");
+		set_rules("MinPay", "MinPay", "required");
+		set_rules("OSBalance", "OSBalance", "required");
+		set_rules("Address1", "Address1", "required");
+		set_rules("Address2", "Address2", "required");
+		set_rules("Address3", "Address3", "required");
+		set_rules("Address4", "Address4", "required");
+		set_rules("City", "City", "required");
+		set_rules("OfficeName", "OfficeName", "required");
+		set_rules("OfficeAddress1", "OfficeAddress1", "required");
+		set_rules("OfficeAddress2", "OfficeAddress2", "required");
+		set_rules("OfficeAddress3", "OfficeAddress3", "required");
+		set_rules("OfficeAddress4", "OfficeAddress4", "required");
+		set_rules("Phone1", "Phone1", "required");
+		set_rules("Phone2", "Phone2", "required");
+		set_rules("HomePhone1", "HomePhone1", "required");
+		set_rules("HomePhone2", "HomePhone2", "required");
+		set_rules("OfficePhone1", "OfficePhone1", "required");
+		set_rules("OfficePhone2", "OfficePhone2", "required");
+		set_rules("ECPhone1", "ECPhone1", "required");
+		set_rules("ECPhone2", "ECPhone2", "required");
+		set_rules("OtherNumber", "OtherNumber", "required");
+		set_rules("ECName", "ECName", "required");
+		set_rules("ECName2", "ECName2", "required");
+		set_rules("StatusEC", "StatusEC", "required");
+		set_rules("StatusEC2", "StatusEC2", "required");
+		set_rules("MotherName", "MotherName", "required");
+		set_rules("Sex", "Sex", "required");
+		set_rules("Email", "Email", "required");
+		set_rules("VirtualAccount", "VirtualAccount", "required");
+		set_rules("VirtualAccountName", "VirtualAccountName", "required");
+		set_rules("Komoditi", "Komoditi", "required");
+		set_rules("KomoditiType", "KomoditiType", "required");
+		set_rules("Produsen", "Produsen", "required");
+		set_rules("Model", "Model", "required");
+		set_rules("LoanTerm", "LoanTerm", "required");
+		set_rules("InstallmentAlreadyPaid", "InstallmentAlreadyPaid", "required");
+		set_rules("MonthlyPaymentNominal", "MonthlyPaymentNominal", "required");
+		set_rules("DPD", "DPD", "required");
+		set_rules("Bucket", "Bucket", "required");
+		set_rules("BillingNoPenalty", "BillingNoPenalty", "required");
+		set_rules("DendaBelumDibayar", "DendaBelumDibayar", "required");
+		set_rules("LastVisitDate", "LastVisitDate", "required");
+		set_rules("LastVisitResult", "LastVisitResult", "required");
+		set_rules("LastReport", "LastReport", "required");
+		set_rules("LastVisitAddress", "LastVisitAddress", "required");
+		set_rules("OTSOffer", "OTSOffer", "required");
+		set_rules("OtherData1", "OtherData1", "required");
+		set_rules("OtherData2", "OtherData2", "required");
+		set_rules("OtherData3", "OtherData3", "required");
+		set_rules("OtherData4", "OtherData4", "required");
+		set_rules("OtherData5", "OtherData5", "required");
+		set_rules("PermanentMessage", "PermanentMessage", "required");
+		set_rules("Deskcoll_id", "Deskcoll_id", "required");
+		set_rules("IsDeletedByAdmin", "IsDeletedByAdmin", "required");
+		set_rules("Report", "Report", "required");
+		set_rules("Action", "Action", "required");
+		set_rules("ReportDate", "ReportDate", "required");
+		set_rules("PTPDate", "PTPDate", "required");
+		set_rules("PTPAmount", "PTPAmount", "required");
+		set_rules("PaidDate", "PaidDate", "required");
+		set_rules("PaidAmount", "PaidAmount", "required");
 
 		if ($this->form_validation->run() == False) {
 			$data = [
@@ -423,83 +513,83 @@ class Bankdata_customer extends CI_Controller
 	public function update($id)
 	{
 		check_rule(false, "is_update", true);
-		set_rules("NumberCard","NumberCard", "required");
-		set_rules("Bank","Bank", "required");
-		set_rules("TypeCard","TypeCard", "required");
-		set_rules("NameCustomer","NameCustomer", "required");
-		set_rules("PIC","PIC", "required");
-		set_rules("AssignmentDate","AssignmentDate", "required");
-		set_rules("ExpireDate","ExpireDate", "required");
-		set_rules("DateOfBirth","DateOfBirth", "required");
-		set_rules("OpenDate","OpenDate", "required");
-		set_rules("WODate","WODate", "required");
-		set_rules("LastPayDate","LastPayDate", "required");
-		set_rules("LastTransactionDate","LastTransactionDate", "required");
-		set_rules("LastPayment","LastPayment", "required");
-		set_rules("LastTransactionNominal","LastTransactionNominal", "required");
-		set_rules("Limit","Limit", "required");
-		set_rules("Principal","Principal", "required");
-		set_rules("MinPay","MinPay", "required");
-		set_rules("OSBalance","OSBalance", "required");
-		set_rules("Address1","Address1", "required");
-		set_rules("Address2","Address2", "required");
-		set_rules("Address3","Address3", "required");
-		set_rules("Address4","Address4", "required");
-		set_rules("City","City", "required");
-		set_rules("OfficeName","OfficeName", "required");
-		set_rules("OfficeAddress1","OfficeAddress1", "required");
-		set_rules("OfficeAddress2","OfficeAddress2", "required");
-		set_rules("OfficeAddress3","OfficeAddress3", "required");
-		set_rules("OfficeAddress4","OfficeAddress4", "required");
-		set_rules("Phone1","Phone1", "required");
-		set_rules("Phone2","Phone2", "required");
-		set_rules("HomePhone1","HomePhone1", "required");
-		set_rules("HomePhone2","HomePhone2", "required");
-		set_rules("OfficePhone1","OfficePhone1", "required");
-		set_rules("OfficePhone2","OfficePhone2", "required");
-		set_rules("ECPhone1","ECPhone1", "required");
-		set_rules("ECPhone2","ECPhone2", "required");
-		set_rules("OtherNumber","OtherNumber", "required");
-		set_rules("ECName","ECName", "required");
-		set_rules("ECName2","ECName2", "required");
-		set_rules("StatusEC","StatusEC", "required");
-		set_rules("StatusEC2","StatusEC2", "required");
-		set_rules("MotherName","MotherName", "required");
-		set_rules("Sex","Sex", "required");
-		set_rules("Email","Email", "required");
-		set_rules("VirtualAccount","VirtualAccount", "required");
-		set_rules("VirtualAccountName","VirtualAccountName", "required");
-		set_rules("Komoditi","Komoditi", "required");
-		set_rules("KomoditiType","KomoditiType", "required");
-		set_rules("Produsen","Produsen", "required");
-		set_rules("Model","Model", "required");
-		set_rules("LoanTerm","LoanTerm", "required");
-		set_rules("InstallmentAlreadyPaid","InstallmentAlreadyPaid", "required");
-		set_rules("MonthlyPaymentNominal","MonthlyPaymentNominal", "required");
-		set_rules("DPD","DPD", "required");
-		set_rules("Bucket","Bucket", "required");
-		set_rules("BillingNoPenalty","BillingNoPenalty", "required");
-		set_rules("DendaBelumDibayar","DendaBelumDibayar", "required");
-		set_rules("LastVisitDate","LastVisitDate", "required");
-		set_rules("LastVisitResult","LastVisitResult", "required");
-		set_rules("LastReport","LastReport", "required");
-		set_rules("LastVisitAddress","LastVisitAddress", "required");
-		set_rules("OTSOffer","OTSOffer", "required");
-		set_rules("OtherData1","OtherData1", "required");
-		set_rules("OtherData2","OtherData2", "required");
-		set_rules("OtherData3","OtherData3", "required");
-		set_rules("OtherData4","OtherData4", "required");
-		set_rules("OtherData5","OtherData5", "required");
-		set_rules("PermanentMessage","PermanentMessage", "required");
-		set_rules("Deskcoll_id","Deskcoll_id", "required");
-		set_rules("IsDeletedByAdmin","IsDeletedByAdmin", "required");
-		set_rules("Report","Report", "required");
-		set_rules("Action","Action", "required");
-		set_rules("ReportDate","ReportDate", "required");
-		set_rules("PTPDate","PTPDate", "required");
-		set_rules("PTPAmount","PTPAmount", "required");
-		set_rules("PaidDate","PaidDate", "required");
-		set_rules("PaidAmount","PaidAmount", "required");
+		set_rules("NumberCard", "NumberCard", "required");
+		set_rules("Bank", "Bank", "required");
+		set_rules("TypeCard", "TypeCard", "required");
+		set_rules("NameCustomer", "NameCustomer", "required");
+		set_rules("PIC", "PIC", "required");
+		set_rules("AssignmentDate", "AssignmentDate", "required");
+		set_rules("ExpireDate", "ExpireDate", "required");
+		set_rules("DateOfBirth", "DateOfBirth", "required");
+		set_rules("OpenDate", "OpenDate", "required");
+		set_rules("WODate", "WODate", "required");
+		set_rules("LastPayDate", "LastPayDate", "required");
+		set_rules("LastTransactionDate", "LastTransactionDate", "required");
+		set_rules("LastPayment", "LastPayment", "required");
+		set_rules("LastTransactionNominal", "LastTransactionNominal", "required");
+		set_rules("Limit", "Limit", "required");
+		set_rules("Principal", "Principal", "required");
+		set_rules("MinPay", "MinPay", "required");
+		set_rules("OSBalance", "OSBalance", "required");
+		set_rules("Address1", "Address1", "required");
+		set_rules("Address2", "Address2", "required");
+		set_rules("Address3", "Address3", "required");
+		set_rules("Address4", "Address4", "required");
+		set_rules("City", "City", "required");
+		set_rules("OfficeName", "OfficeName", "required");
+		set_rules("OfficeAddress1", "OfficeAddress1", "required");
+		set_rules("OfficeAddress2", "OfficeAddress2", "required");
+		set_rules("OfficeAddress3", "OfficeAddress3", "required");
+		set_rules("OfficeAddress4", "OfficeAddress4", "required");
+		set_rules("Phone1", "Phone1", "required");
+		set_rules("Phone2", "Phone2", "required");
+		set_rules("HomePhone1", "HomePhone1", "required");
+		set_rules("HomePhone2", "HomePhone2", "required");
+		set_rules("OfficePhone1", "OfficePhone1", "required");
+		set_rules("OfficePhone2", "OfficePhone2", "required");
+		set_rules("ECPhone1", "ECPhone1", "required");
+		set_rules("ECPhone2", "ECPhone2", "required");
+		set_rules("OtherNumber", "OtherNumber", "required");
+		set_rules("ECName", "ECName", "required");
+		set_rules("ECName2", "ECName2", "required");
+		set_rules("StatusEC", "StatusEC", "required");
+		set_rules("StatusEC2", "StatusEC2", "required");
+		set_rules("MotherName", "MotherName", "required");
+		set_rules("Sex", "Sex", "required");
+		set_rules("Email", "Email", "required");
+		set_rules("VirtualAccount", "VirtualAccount", "required");
+		set_rules("VirtualAccountName", "VirtualAccountName", "required");
+		set_rules("Komoditi", "Komoditi", "required");
+		set_rules("KomoditiType", "KomoditiType", "required");
+		set_rules("Produsen", "Produsen", "required");
+		set_rules("Model", "Model", "required");
+		set_rules("LoanTerm", "LoanTerm", "required");
+		set_rules("InstallmentAlreadyPaid", "InstallmentAlreadyPaid", "required");
+		set_rules("MonthlyPaymentNominal", "MonthlyPaymentNominal", "required");
+		set_rules("DPD", "DPD", "required");
+		set_rules("Bucket", "Bucket", "required");
+		set_rules("BillingNoPenalty", "BillingNoPenalty", "required");
+		set_rules("DendaBelumDibayar", "DendaBelumDibayar", "required");
+		set_rules("LastVisitDate", "LastVisitDate", "required");
+		set_rules("LastVisitResult", "LastVisitResult", "required");
+		set_rules("LastReport", "LastReport", "required");
+		set_rules("LastVisitAddress", "LastVisitAddress", "required");
+		set_rules("OTSOffer", "OTSOffer", "required");
+		set_rules("OtherData1", "OtherData1", "required");
+		set_rules("OtherData2", "OtherData2", "required");
+		set_rules("OtherData3", "OtherData3", "required");
+		set_rules("OtherData4", "OtherData4", "required");
+		set_rules("OtherData5", "OtherData5", "required");
+		set_rules("PermanentMessage", "PermanentMessage", "required");
+		set_rules("Deskcoll_id", "Deskcoll_id", "required");
+		set_rules("IsDeletedByAdmin", "IsDeletedByAdmin", "required");
+		set_rules("Report", "Report", "required");
+		set_rules("Action", "Action", "required");
+		set_rules("ReportDate", "ReportDate", "required");
+		set_rules("PTPDate", "PTPDate", "required");
+		set_rules("PTPAmount", "PTPAmount", "required");
+		set_rules("PaidDate", "PaidDate", "required");
+		set_rules("PaidAmount", "PaidAmount", "required");
 
 		if ($this->form_validation->run() == False) {
 			$data = [
@@ -605,5 +695,19 @@ class Bankdata_customer extends CI_Controller
 		dbdelete("bankdata_customer", ["id_bankdata_customer" => $id]);
 		set_flashdata("msg", swalfire('Data Berhasil Dihapus', 'success'));
 		redirect(base_url("bankdata_customer/index"));
+	}
+
+	public function delete_selected()
+	{
+		check_rule(false, "is_delete", true);
+
+
+		$list = post('id');
+		foreach ($list as $id) {
+			dbdelete("bankdata_customer", ["id" => $id]);
+		}
+		echo '200';
+		// set_flashdata("msg", swalfire('Data Berhasil Dihapus', 'success'));
+		// redirect(base_url("bankdata_customer/index"));
 	}
 }

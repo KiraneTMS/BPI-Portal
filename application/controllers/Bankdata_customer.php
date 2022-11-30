@@ -208,10 +208,13 @@ class Bankdata_customer extends CI_Controller
 			// $data[] = $key['nama_status_penjualan'];
 			// $data[] = $key['keterangan_penjualan'];
 
-			$data[] = '<div class="form-check">
-				<input class="form-check-input checkbox" data-id="'.$key['id'].'" type="checkbox" value="" id="selectall">
+			if (check_rule(false, "is_delete")) :
+				$data[] = '<div class="form-check">
+				<input class="form-check-input checkbox" data-id="' . $key['id'] . '" type="checkbox" value="" id="selectall">
 				<label class="form-check-label" for="selectall"></label>
 			</div>';
+			endif;
+
 			$data[] = $key['NumberCard'];
 			$data[] = $key['Bank'];
 			$data[] = $key['TypeCard'];

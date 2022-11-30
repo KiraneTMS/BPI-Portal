@@ -122,17 +122,17 @@ class Bankdata_customer extends CI_Controller
 			$data[] = $key['PaidAmount'];
 			$action = '';
 			if (check_rule(false,"is_read")) {
-				$action .= '<a href="'.base_url("pertanyaan/detail/".$key['id']).'" class="badge badge-info">
+				$action .= '<a href="'.base_url("bankdata_customer/detail/".$key['id']).'" class="badge badge-info">
 								<i class="mt-1 mr-1 mb-1 ml-1 fas fa-eye"></i>
 							</a>&nbsp';	
 			}
 			if (check_rule(false,"is_update")) {
-				$action .= '<a href="'.base_url("pertanyaan/update/".$key['id']).'" class="badge badge-dark">
+				$action .= '<a href="'.base_url("bankdata_customer/update/".$key['id']).'" class="badge badge-dark">
 								<i class="mt-1 mr-1 mb-1 ml-1 fas fa-edit"></i>
 							</a>&nbsp';	
 			}
 			if (check_rule(false,"is_delete")) {
-				$action .= '<a href="#" data-href="'.base_url("pertanyaan/delete/".$key['id']).'" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
+				$action .= '<a href="#" data-href="'.base_url("bankdata_customer/delete/".$key['id']).'" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
 								<i class="mt-1 mr-1 mb-1 ml-1 fas fa-trash"></i>
 							</a>';
 			}

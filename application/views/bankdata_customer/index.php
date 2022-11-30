@@ -56,6 +56,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <?php if (check_rule(false, "is_delete")) : ?>
                                 <th>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="selectall">
@@ -64,6 +65,8 @@
                                         </label>
                                     </div>
                                 </th>
+                                <?php endif; ?>
+
                                 <th>Number Card</th>
                                 <th>Bank</th>
                                 <th>Type Card</th>

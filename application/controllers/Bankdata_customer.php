@@ -1,8 +1,88 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Bankdata_customer extends CI_Controller
 {
+
+	public function __construct()
+	{
+		parent::__construct();
+		// Load Model
+		$this->ip_address    = $_SERVER['REMOTE_ADDR'];
+		$this->datetime 	    = date("Y-m-d H:i:s");
+	}
+
+	public function import()
+	{
+		check_rule(false, "is_create", true);
+
+		$path 		= 'uploads/';
+		$json 		= [];
+		$this->upload_config($path);
+		if (!$this->upload->do_upload('file')) {
+			$json = [
+				'error_message' => $this->upload->display_errors(),
+			];
+		} else {
+			$file_data 	= $this->upload->data();
+			$file_name 	= $path . $file_data['file_name'];
+			$arr_file 	= explode('.', $file_name);
+			$extension 	= end($arr_file);
+			if ('csv' == $extension) {
+				$reader 	= new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+			} else {
+				$reader 	= new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+			}
+			$spreadsheet 	= $reader->load($file_name);
+			$sheet_data 	= $spreadsheet->getActiveSheet()->toArray();
+			$list 			= [];
+			foreach ($sheet_data as $key => $val) {
+				if ($key != 0) {
+					$list[] = [
+						'name'					=> $val[0],
+						'country_code'			=> $val[1],
+						'mobile'				=> $val[2],
+					];
+				}
+			}
+			if (file_exists($file_name))
+				unlink($file_name);
+			if (count($list) > 0) {
+				$result 	= $this->user->add_batch($list);
+				if ($result) {
+					$json = [
+						'success_message' 	=> "All Entries are imported successfully.",
+					];
+				} else {
+					$json = [
+						'error_message' 	=> "Something went wrong. Please try again.",
+					];
+				}
+			} else {
+				$json = [
+					'error_message' => "No new record is found.",
+				];
+			}
+		}
+		echo json_encode($json);
+	}
+
+	private function upload_config($path)
+	{
+		if (!is_dir($path))
+			mkdir($path, 0777, TRUE);
+		$config['upload_path'] 		= './' . $path;
+		$config['allowed_types'] 	= 'csv|CSV|xlsx|XLSX|xls|XLS';
+		$config['max_filename']	 	= '255';
+		$config['encrypt_name'] 	= TRUE;
+		$config['max_size'] 		= 4096;
+		$this->load->library('upload', $config);
+	}
+
 
 	public function index()
 	{
@@ -20,7 +100,6 @@ class Bankdata_customer extends CI_Controller
 		view('templates/footer');
 	}
 
-	
 	public function datatable()
 	{
 		check_rule(false, "is_read", true);
@@ -121,18 +200,18 @@ class Bankdata_customer extends CI_Controller
 			$data[] = $key['PaidDate'];
 			$data[] = $key['PaidAmount'];
 			$action = '';
-			if (check_rule(false,"is_read")) {
-				$action .= '<a href="'.base_url("bankdata_customer/detail/".$key['id']).'" class="badge badge-info">
+			if (check_rule(false, "is_read")) {
+				$action .= '<a href="' . base_url("bankdata_customer/detail/" . $key['id']) . '" class="badge badge-info">
 								<i class="mt-1 mr-1 mb-1 ml-1 fas fa-eye"></i>
-							</a>&nbsp';	
+							</a>&nbsp';
 			}
-			if (check_rule(false,"is_update")) {
-				$action .= '<a href="'.base_url("bankdata_customer/update/".$key['id']).'" class="badge badge-dark">
+			if (check_rule(false, "is_update")) {
+				$action .= '<a href="' . base_url("bankdata_customer/update/" . $key['id']) . '" class="badge badge-dark">
 								<i class="mt-1 mr-1 mb-1 ml-1 fas fa-edit"></i>
-							</a>&nbsp';	
+							</a>&nbsp';
 			}
-			if (check_rule(false,"is_delete")) {
-				$action .= '<a href="#" data-href="'.base_url("bankdata_customer/delete/".$key['id']).'" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
+			if (check_rule(false, "is_delete")) {
+				$action .= '<a href="#" data-href="' . base_url("bankdata_customer/delete/" . $key['id']) . '" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
 								<i class="mt-1 mr-1 mb-1 ml-1 fas fa-trash"></i>
 							</a>';
 			}
@@ -154,7 +233,7 @@ class Bankdata_customer extends CI_Controller
 	{
 		check_rule(false, "is_create", true);
 		set_rules("nama_bankdata_customer", "nama bankdata_customer", "required");
-		
+
 		if ($this->form_validation->run() == False) {
 			$data = [
 				"title" => "Bank Data Customer"
@@ -179,7 +258,7 @@ class Bankdata_customer extends CI_Controller
 	{
 		check_rule(false, "is_update", true);
 		set_rules("nama_bankdata_customer", "nama bankdata_customer", "required");
-		
+
 		if ($this->form_validation->run() == False) {
 			$data = [
 				"title" => "Bank Data Customer",

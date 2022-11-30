@@ -8,6 +8,11 @@
                     <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data
                 </a>
             <?php endif; ?>
+            <?php if (check_rule(false, "is_create")) : ?>
+                <a href="<?= base_url("divisi/tambah"); ?>" class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm float-right">
+                    <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data
+                </a>
+            <?php endif; ?>
         </h6>
 
 

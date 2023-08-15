@@ -122,6 +122,7 @@ class Bankdata_customer extends CI_Controller
 						"PTPAmount" => $val[77],
 						"PaidDate" => $val[78],
 						"PaidAmount" => $val[79],
+						"created_user_bankdata_customer" => userdata('id_user'),
 					];
 				}
 			}
@@ -208,12 +209,14 @@ class Bankdata_customer extends CI_Controller
 			// $data[] = $key['nama_status_penjualan'];
 			// $data[] = $key['keterangan_penjualan'];
 
-			if (check_rule(false, "is_delete")) :
+			if (check_rule(false, "is_delete")) {
 				$data[] = '<div class="form-check">
 				<input class="form-check-input checkbox" data-id="' . $key['id'] . '" type="checkbox" value="" id="selectall">
 				<label class="form-check-label" for="selectall"></label>
 			</div>';
-			endif;
+			} else {
+				$data[] = "";
+			}
 
 			$data[] = $key['NumberCard'];
 			$data[] = $key['Bank'];
@@ -285,7 +288,7 @@ class Bankdata_customer extends CI_Controller
 			$data[] = $key['PermanentMessage'];
 			$data[] = $key['Deskcoll_id'];
 			$data[] = $key['IsDeletedByAdmin'];
-			$data[] = $key['Report'];
+			$data[] = substr($key['Report'], 30,30);
 			$data[] = $key['Action'];
 			$data[] = $key['ReportDate'];
 			$data[] = $key['PTPDate'];
@@ -505,6 +508,7 @@ class Bankdata_customer extends CI_Controller
 				"PTPAmount" => post("PTPAmount"),
 				"PaidDate" => post("PaidDate"),
 				"PaidAmount" => post("PaidAmount"),
+				"created_user_bankdata_customer" => userdata('id_user'),
 			];
 
 			dbinsert("bankdata_customer", $data);

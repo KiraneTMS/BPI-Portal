@@ -363,12 +363,14 @@
                             </div>
                             <div class="form-group">
                                 <label for="Report">Report</label>
-                                <input class="form-control" type="text" name="Report" id="Report" placeholder="Report" value="<?= $data["Report"]; ?>" readonly>
+                                <!-- <input class="form-control" type="text" name="Report" id="Report" placeholder="Report" value="<?= $data["Report"]; ?>" readonly> -->
+                                <textarea class="form-control" name="Report" id="Report" cols="30" rows="10" readonly><?= $data["Report"]; ?></textarea>
                                 <?= form_error("Report", '<small class="text-danger">', '</small>'); ?>
                             </div>
                             <div class="form-group">
                                 <label for="Action">Action</label>
                                 <input class="form-control" type="text" name="Action" id="Action" placeholder="Action" value="<?= $data["Action"]; ?>" readonly>
+                                <!-- <textarea class="form-control" name="Action" id="Action" cols="30" rows="10" readonly><?= $data["Action"]; ?></textarea> -->
                                 <?= form_error("Action", '<small class="text-danger">', '</small>'); ?>
                             </div>
                             <div class="form-group">

@@ -55,26 +55,26 @@
                     <table id="datatable" class="table display responsive nowrap" width="100%">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <?php if (check_rule(false, "is_delete")) : ?>
-                                <th>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="selectall">
-                                        <label class="form-check-label" for="selectall">
+                                <th data-priority="1">No</th>
+                                <th data-priority="1">
+                                    <?php if (check_rule(false, "is_delete")) : ?>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="selectall">
+                                            <label class="form-check-label" for="selectall">
 
-                                        </label>
-                                    </div>
+                                            </label>
+                                        </div>
+                                    <?php endif; ?>
                                 </th>
-                                <?php endif; ?>
 
-                                <th>Number Card</th>
+                                <th data-priority="1">Number Card</th>
                                 <th>Bank</th>
                                 <th>Type Card</th>
                                 <th>Name Customer</th>
                                 <th>PIC</th>
                                 <th>Assignment Date</th>
                                 <th>Expire Date</th>
-                                <th>Date Of Birth</th>
+                                <th data-priority="1">Date Of Birth</th>
                                 <th>Open Date</th>
                                 <th>WO Date</th>
                                 <th>Last Pay Date</th>
@@ -84,7 +84,7 @@
                                 <th>Limit</th>
                                 <th>Principal</th>
                                 <th>Min Pay</th>
-                                <th>OS Balance</th>
+                                <th data-priority="1">OS Balance</th>
                                 <th>Address 1</th>
                                 <th>Address 2</th>
                                 <th>Address 3</th>
@@ -138,13 +138,17 @@
                                 <th>Deskcoll_id</th>
                                 <th>IsDeletedByAdmin</th>
                                 <th>Report</th>
-                                <th>Action</th>
+                                <th data-priority="1">Action</th>
                                 <th>ReportDate</th>
                                 <th>PTPDate</th>
                                 <th>PTPAmount</th>
                                 <th>PaidDate</th>
                                 <th>PaidAmount</th>
-                                <th data-priority="1">Action</th>
+                                <?php if (userdata('role_id') == '4') : ?>
+                                    <th data-priority="1">Detail</th>
+                                <?php else : ?>
+                                    <th data-priority="1">Action</th>
+                                <?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -166,12 +170,20 @@
                                     // }
                                 },
                                 'columnDefs': [{
-                                    'targets': [1],
-                                    /* column index */
-                                    'orderable': false,
-                                    /* true or false */
-                                }]
+                                        'targets': [1],
+                                        /* column index */
+                                        'orderable': false,
+                                        /* true or false */
+                                    },
+                                    // {
+                                    //     targets: [4, 7, 8],
+                                    //     visible: false,
+                                    // },
+                                ]
                             });
+
+                            // hide collumn
+
 
                             $('#selectall').on('click', function() {
                                 if (this.checked) {
@@ -192,17 +204,19 @@
                                     id[i] = $(this).data('id');
                                 });
                                 if (id.length === 0) {
-                                    Swal.fire('error',"Please Select atleast one checkbox",'error');
+                                    Swal.fire('error', "Please Select atleast one checkbox", 'error');
                                 } else {
                                     console.log(id);
                                     $.ajax({
                                         url: '<?= base_url("bankdata_customer/delete_selected"); ?>',
                                         method: 'POST',
-                                        data: {id:id},
-                                        success: function(data){
+                                        data: {
+                                            id: id
+                                        },
+                                        success: function(data) {
                                             if (data == '200') {
                                                 $('#selectall').prop('checked', false);
-                                                Swal.fire('success',"Data Yang Terpilih Berhasil Dihapus",'success');
+                                                Swal.fire('success', "Data Yang Terpilih Berhasil Dihapus", 'success');
                                             }
                                             table.draw()
                                         }

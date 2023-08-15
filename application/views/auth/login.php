@@ -24,11 +24,11 @@
                                         <form class="user" action="" method="POST">
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-user" id="Email" name="Email" placeholder="Enter Email">
-                                                <?= form_error("Email", '<small class="text-danger">', '</small>'); ?>
+                                                <?= form_error("Email", '<small class="text-light">', '</small>'); ?>
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" class="form-control form-control-user" id="Password" name="Password" placeholder="Enter Password">
-                                                <?= form_error("Password", '<small class="text-danger">', '</small>'); ?>
+                                                <?= form_error("Password", '<small class="text-light">', '</small>'); ?>
                                             </div>
                                             <hr>
                                             <button type="submit" class="btn btn-user btn-block btn-light text-dark font-weight-bold">
@@ -36,12 +36,12 @@
                                             </button>
                                         </form>
                                         <hr class="text-light">
-                                        <div class="text-center">
+                                        <!-- <div class="text-center">
                                             <a class="small text-light" href="<?= base_url('auth/forgot') ?>">Forgot Password?</a>
                                         </div>
                                         <div class="text-center">
                                             <a class="small text-light" href="<?= base_url('auth/register') ?>">Not have account? Create an Account!</a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

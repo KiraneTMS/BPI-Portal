@@ -70,7 +70,7 @@
                                 <th data-priority="1">Number Card</th>
                                 <th>Bank</th>
                                 <th>Type Card</th>
-                                <th>Name Customer</th>
+                                <th data-priority="1">Name Customer</th>
                                 <th>PIC</th>
                                 <th>Assignment Date</th>
                                 <th>Expire Date</th>

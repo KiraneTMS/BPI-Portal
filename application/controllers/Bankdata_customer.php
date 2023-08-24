@@ -306,11 +306,11 @@ class Bankdata_customer extends CI_Controller
 								<i class="mt-1 mr-1 mb-1 ml-1 fas fa-edit"></i>
 							</a>&nbsp';
 			}
-			if (check_rule(false, "is_delete")) {
-				$action .= '<a href="#" data-href="' . base_url("bankdata_customer/delete/" . $key['id']) . '" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
-								<i class="mt-1 mr-1 mb-1 ml-1 fas fa-trash"></i>
-							</a>';
-			}
+			// if (check_rule(false, "is_delete")) {
+			// 	$action .= '<a href="#" data-href="' . base_url("bankdata_customer/delete/" . $key['id']) . '" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
+			// 					<i class="mt-1 mr-1 mb-1 ml-1 fas fa-trash"></i>
+			// 				</a>';
+			// }
 			$data[] = $action;
 			array_push($show, $data);
 		}

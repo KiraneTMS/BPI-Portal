@@ -8,7 +8,7 @@
             <div class="card-body">
                 <form action="" method="POST" enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="NumberCard">NumberCard</label>
                                 <input class="form-control" type="text" name="NumberCard" id="NumberCard" placeholder="NumberCard" value="<?= set_value("NumberCard"); ?>">
@@ -139,6 +139,8 @@
                                 <input class="form-control" type="text" name="OfficeAddress2" id="OfficeAddress2" placeholder="OfficeAddress2" value="<?= set_value("OfficeAddress2"); ?>">
                                 <?= form_error("OfficeAddress2", '<small class="text-danger">', '</small>'); ?>
                             </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="OfficeAddress3">OfficeAddress3</label>
                                 <input class="form-control" type="text" name="OfficeAddress3" id="OfficeAddress3" placeholder="OfficeAddress3" value="<?= set_value("OfficeAddress3"); ?>">
@@ -204,8 +206,6 @@
                                 <input class="form-control" type="text" name="ECName2" id="ECName2" placeholder="ECName2" value="<?= set_value("ECName2"); ?>">
                                 <?= form_error("ECName2", '<small class="text-danger">', '</small>'); ?>
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="StatusEC">StatusEC</label>
                                 <input class="form-control" type="text" name="StatusEC" id="StatusEC" placeholder="StatusEC" value="<?= set_value("StatusEC"); ?>">
@@ -271,6 +271,8 @@
                                 <input class="form-control" type="text" name="InstallmentAlreadyPaid" id="InstallmentAlreadyPaid" placeholder="InstallmentAlreadyPaid" value="<?= set_value("InstallmentAlreadyPaid"); ?>">
                                 <?= form_error("InstallmentAlreadyPaid", '<small class="text-danger">', '</small>'); ?>
                             </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="MonthlyPaymentNominal">MonthlyPaymentNominal</label>
                                 <input class="form-control" type="text" name="MonthlyPaymentNominal" id="MonthlyPaymentNominal" placeholder="MonthlyPaymentNominal" value="<?= set_value("MonthlyPaymentNominal"); ?>">
@@ -406,9 +408,9 @@
                             </div> -->
                         </div>
                     </div>
-                    <?php if (check_rule(false, "is_create")) :?>
+                    <?php if (check_rule(false, "is_create")) : ?>
                         <button type="submit" class="btn btn-dark w-100">Submit</button>
-			        <?php endif; ?>
+                    <?php endif; ?>
                 </form>
             </div>
         </div>

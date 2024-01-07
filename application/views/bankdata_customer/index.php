@@ -51,6 +51,24 @@
         <!-- Content Row -->
         <div class="row">
             <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="form-group d-none d-sm-inline-block ml-1">
+                        <div class="input-group">
+                            <!-- <select class="custom-select filter" name="id_status_bantuan_hukum" id="id_status_bantuan_hukum" style="font-size: 0.8rem;"> -->
+                            <select class="custom-select filter" name="id_status_bantuan_hukum" id="id_status_bantuan_hukum" style="font-size: 0.8rem;">
+                                <option value="" selected>-- Status --</option>
+                                <?php
+                                $allow_id_status_bantuan_hukum = [];
+                                foreach ($tb_status_bantuan_hukum as $key) :
+                                ?>
+                                    <?php if (!in_array($key['id_status_bantuan_hukum'], $allow_id_status_bantuan_hukum)) : ?>
+                                        <option value="<?= $key['id_status_bantuan_hukum'] ?>"><?= $key['nama_status_bantuan_hukum'] ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive" style="overflow-x:auto;">
                     <table id="datatable" class="table display responsive nowrap" width="100%">
                         <thead>

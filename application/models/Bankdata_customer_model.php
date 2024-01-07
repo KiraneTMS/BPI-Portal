@@ -212,10 +212,12 @@ class Bankdata_customer_model extends CI_Model
         $this->db->from($this->table);
         if (post("search")['value'] != "") {
             $search = post("search")['value'];
+            $this->db->group_start();
             $this->db->like($this->select_column[0], $search);
             foreach (array_slice($this->select_column, 1) as $key) {
                 $this->db->or_like($key, $search);
             }
+            $this->db->group_end();
         }
         // if (post("draw") == 1) {
         //     $this->db->order_by($this->table_column[0], "DESC");

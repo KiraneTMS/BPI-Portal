@@ -8,7 +8,7 @@
             <div class="card-body">
                 <form action="" method="POST" enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="NumberCard">NumberCard</label>
                                 <input class="form-control" type="text" name="NumberCard" id="NumberCard" placeholder="NumberCard" value="<?= $data["NumberCard"]; ?>">
@@ -139,6 +139,8 @@
                                 <input class="form-control" type="text" name="OfficeAddress2" id="OfficeAddress2" placeholder="OfficeAddress2" value="<?= $data["OfficeAddress2"]; ?>">
                                 <?= form_error("OfficeAddress2", '<small class="text-danger">', '</small>'); ?>
                             </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="OfficeAddress3">OfficeAddress3</label>
                                 <input class="form-control" type="text" name="OfficeAddress3" id="OfficeAddress3" placeholder="OfficeAddress3" value="<?= $data["OfficeAddress3"]; ?>">
@@ -151,48 +153,102 @@
                             </div>
                             <div class="form-group">
                                 <label for="Phone1">Phone1</label>
-                                <input class="form-control" type="text" name="Phone1" id="Phone1" placeholder="Phone1" value="<?= $data["Phone1"]; ?>">
-                                <?= form_error("Phone1", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="Phone1" id="Phone1" placeholder="Phone1" value="<?= $data["Phone1"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["Phone1"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["Phone1"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("Phone1", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="Phone2">Phone2</label>
-                                <input class="form-control" type="text" name="Phone2" id="Phone2" placeholder="Phone2" value="<?= $data["Phone2"]; ?>">
-                                <?= form_error("Phone2", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="Phone2" id="Phone2" placeholder="Phone2" value="<?= $data["Phone2"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["Phone2"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["Phone2"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("Phone2", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="HomePhone1">HomePhone1</label>
-                                <input class="form-control" type="text" name="HomePhone1" id="HomePhone1" placeholder="HomePhone1" value="<?= $data["HomePhone1"]; ?>">
-                                <?= form_error("HomePhone1", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="HomePhone1" id="HomePhone1" placeholder="HomePhone1" value="<?= $data["HomePhone1"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["HomePhone1"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["HomePhone1"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("HomePhone1", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="HomePhone2">HomePhone2</label>
-                                <input class="form-control" type="text" name="HomePhone2" id="HomePhone2" placeholder="HomePhone2" value="<?= $data["HomePhone2"]; ?>">
-                                <?= form_error("HomePhone2", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="HomePhone2" id="HomePhone2" placeholder="HomePhone2" value="<?= $data["HomePhone2"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["HomePhone2"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["HomePhone2"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("HomePhone2", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="OfficePhone1">OfficePhone1</label>
-                                <input class="form-control" type="text" name="OfficePhone1" id="OfficePhone1" placeholder="OfficePhone1" value="<?= $data["OfficePhone1"]; ?>">
-                                <?= form_error("OfficePhone1", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="OfficePhone1" id="OfficePhone1" placeholder="OfficePhone1" value="<?= $data["OfficePhone1"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["OfficePhone1"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["OfficePhone1"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("OfficePhone1", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="OfficePhone2">OfficePhone2</label>
-                                <input class="form-control" type="text" name="OfficePhone2" id="OfficePhone2" placeholder="OfficePhone2" value="<?= $data["OfficePhone2"]; ?>">
-                                <?= form_error("OfficePhone2", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="OfficePhone2" id="OfficePhone2" placeholder="OfficePhone2" value="<?= $data["OfficePhone2"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["OfficePhone2"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["OfficePhone2"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("OfficePhone2", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="ECPhone1">ECPhone1</label>
-                                <input class="form-control" type="text" name="ECPhone1" id="ECPhone1" placeholder="ECPhone1" value="<?= $data["ECPhone1"]; ?>">
-                                <?= form_error("ECPhone1", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="ECPhone1" id="ECPhone1" placeholder="ECPhone1" value="<?= $data["ECPhone1"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["ECPhone1"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["ECPhone1"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("ECPhone1", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="ECPhone2">ECPhone2</label>
-                                <input class="form-control" type="text" name="ECPhone2" id="ECPhone2" placeholder="ECPhone2" value="<?= $data["ECPhone2"]; ?>">
-                                <?= form_error("ECPhone2", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="ECPhone2" id="ECPhone2" placeholder="ECPhone2" value="<?= $data["ECPhone2"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["ECPhone2"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["ECPhone2"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("ECPhone2", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="OtherNumber">OtherNumber</label>
-                                <input class="form-control" type="text" name="OtherNumber" id="OtherNumber" placeholder="OtherNumber" value="<?= $data["OtherNumber"]; ?>">
-                                <?= form_error("OtherNumber", '<small class="text-danger">', '</small>'); ?>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="OtherNumber" id="OtherNumber" placeholder="OtherNumber" value="<?= $data["OtherNumber"]; ?>">
+                                    <div class="input-group-append">
+                                        <!-- <a target="_blank" class="btn btn-success" href="https://wa.me/<?= $data["OtherNumber"]; ?>">WA</a> -->
+                                        <a target="_blank" class="btn btn-danger" href="tel:<?= $data["OtherNumber"]; ?>">Call</a>
+                                    </div>
+                                    <?= form_error("OtherNumber", '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="ECName">ECName</label>
@@ -204,8 +260,8 @@
                                 <input class="form-control" type="text" name="ECName2" id="ECName2" placeholder="ECName2" value="<?= $data["ECName2"]; ?>">
                                 <?= form_error("ECName2", '<small class="text-danger">', '</small>'); ?>
                             </div>
-                        </div>
-                        <div class="col-md-6">
+
+
                             <div class="form-group">
                                 <label for="StatusEC">StatusEC</label>
                                 <input class="form-control" type="text" name="StatusEC" id="StatusEC" placeholder="StatusEC" value="<?= $data["StatusEC"]; ?>">
@@ -261,6 +317,7 @@
                                 <input class="form-control" type="text" name="Model" id="Model" placeholder="Model" value="<?= $data["Model"]; ?>">
                                 <?= form_error("Model", '<small class="text-danger">', '</small>'); ?>
                             </div>
+
                             <div class="form-group">
                                 <label for="LoanTerm">LoanTerm</label>
                                 <input class="form-control" type="text" name="LoanTerm" id="LoanTerm" placeholder="LoanTerm" value="<?= $data["LoanTerm"]; ?>">
@@ -271,6 +328,8 @@
                                 <input class="form-control" type="text" name="InstallmentAlreadyPaid" id="InstallmentAlreadyPaid" placeholder="InstallmentAlreadyPaid" value="<?= $data["InstallmentAlreadyPaid"]; ?>">
                                 <?= form_error("InstallmentAlreadyPaid", '<small class="text-danger">', '</small>'); ?>
                             </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="MonthlyPaymentNominal">MonthlyPaymentNominal</label>
                                 <input class="form-control" type="text" name="MonthlyPaymentNominal" id="MonthlyPaymentNominal" placeholder="MonthlyPaymentNominal" value="<?= $data["MonthlyPaymentNominal"]; ?>">
@@ -406,9 +465,9 @@
                             </div> -->
                         </div>
                     </div>
-                    <?php if (check_rule(false, "is_update")) :?>
+                    <?php if (check_rule(false, "is_update")) : ?>
                         <button type="submit" class="btn btn-dark w-100">Submit</button>
-			        <?php endif; ?>
+                    <?php endif; ?>
                 </form>
             </div>
         </div>

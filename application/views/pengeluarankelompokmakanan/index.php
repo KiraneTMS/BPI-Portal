@@ -33,16 +33,19 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-dark h4">Bank Data Customer
+        <h6 class="m-0 font-weight-bold text-dark h4">Pengeluaran Kelompok Makanan
+            <a href="<?= base_url("pengeluarankelompokmakanan/downloadsql"); ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm float-right ml-1">
+                <i class="fas fa-download fa-sm text-white-50"></i> Download SQL
+            </a>
             <?php if (check_rule(false, "is_create")) : ?>
-                <a href="<?= base_url("bankdata_customer/tambah"); ?>" class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm float-right ml-1">
+                <!-- <a href="<?= base_url("bankdata_customer/tambah"); ?>" class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm float-right ml-1">
                     <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data
-                </a>
+                </a> -->
             <?php endif; ?>
             <?php if (check_rule(false, "is_delete")) : ?>
-                <a id="deleteselected" data-href="<?= base_url("bankdata_customer/tambah"); ?>" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm float-right">
+                <!-- <a id="deleteselected" data-href="<?= base_url("bankdata_customer/tambah"); ?>" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm float-right">
                     <i class="fas fa-trash fa-sm text-white-50"></i> Hapus Selected Data
-                </a>
+                </a> -->
             <?php endif; ?>
 
         </h6>
@@ -51,10 +54,9 @@
         <!-- Content Row -->
         <div class="row">
             <div class="col-md-12">
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                     <div class="form-group d-none d-sm-inline-block ml-1">
                         <div class="input-group">
-                            <!-- <select class="custom-select filter" name="id_status_bantuan_hukum" id="id_status_bantuan_hukum" style="font-size: 0.8rem;"> -->
                             <select class="custom-select filter" name="id_status_bantuan_hukum" id="id_status_bantuan_hukum" style="font-size: 0.8rem;">
                                 <option value="" selected>-- Status --</option>
                                 <?php
@@ -68,13 +70,13 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="table-responsive" style="overflow-x:auto;">
                     <table id="datatable" class="table display responsive nowrap" width="100%">
                         <thead>
                             <tr>
                                 <th data-priority="1">No</th>
-                                <th data-priority="1">
+                                <!-- <th data-priority="1">
                                     <?php if (check_rule(false, "is_delete")) : ?>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="" id="selectall">
@@ -84,88 +86,16 @@
                                         </div>
                                     <?php endif; ?>
                                 </th>
-
-                                <th data-priority="1">Number Card</th>
-                                <th>Bank</th>
-                                <th>Type Card</th>
-                                <th data-priority="1">Name Customer</th>
-                                <th>PIC</th>
-                                <th>Assignment Date</th>
-                                <th>Expire Date</th>
-                                <th data-priority="1">Date Of Birth</th>
-                                <th>Open Date</th>
-                                <th>WO Date</th>
-                                <th>Last Pay Date</th>
-                                <th>Last Transaction Date</th>
-                                <th>Last Payment</th>
-                                <th>Last Transaction Nominal</th>
-                                <th>Limit</th>
-                                <th>Principal</th>
-                                <th>Min Pay</th>
-                                <th data-priority="1">OS Balance</th>
-                                <th>Address 1</th>
-                                <th>Address 2</th>
-                                <th>Address 3</th>
-                                <th>Address 4</th>
-                                <th>City</th>
-                                <th>Office Name</th>
-                                <th>Office Address 1</th>
-                                <th>Office Address 2</th>
-                                <th>Office Address 3</th>
-                                <th>Office Address 4</th>
-                                <th>Phone 1</th>
-                                <th>Phone 2</th>
-                                <th>Home Phone 1</th>
-                                <th>Home Phone 2</th>
-                                <th>Office Phone 1</th>
-                                <th>Office Phone 2</th>
-                                <th>EC Phone 1</th>
-                                <th>EC Phone 2</th>
-                                <th>OtherNumber</th>
-                                <th>ECName</th>
-                                <th>ECName2</th>
-                                <th>StatusEC</th>
-                                <th>StatusEC2</th>
-                                <th>MotherName</th>
-                                <th>Sex</th>
-                                <th>Email</th>
-                                <th>VirtualAccount</th>
-                                <th>VirtualAccountName</th>
-                                <th>Komoditi</th>
-                                <th>KomoditiType</th>
-                                <th>Produsen</th>
-                                <th>Model</th>
-                                <th>LoanTerm</th>
-                                <th>InstallmentAlreadyPaid</th>
-                                <th>MonthlyPaymentNominal</th>
-                                <th>DPD</th>
-                                <th>Bucket</th>
-                                <th>BillingNoPenalty</th>
-                                <th>DendaBelumDibayar</th>
-                                <th>LastVisitDate</th>
-                                <th>LastVisitResult</th>
-                                <th>LastReport</th>
-                                <th>LastVisitAddress</th>
-                                <th>OTSOffer</th>
-                                <th>OtherData1</th>
-                                <th>OtherData2</th>
-                                <th>OtherData3</th>
-                                <th>OtherData4</th>
-                                <th>OtherData5</th>
-                                <th>PermanentMessage</th>
-                                <th>Deskcoll_id</th>
-                                <th>IsDeletedByAdmin</th>
-                                <th>Report</th>
-                                <th data-priority="1">Action</th>
-                                <th>ReportDate</th>
-                                <th>PTPDate</th>
-                                <th>PTPAmount</th>
-                                <th>PaidDate</th>
-                                <th>PaidAmount</th>
+                                <th></th> -->
+                                <!-- <th>id</th> -->
+                                <th>kelompok</th>
+                                <th>kota</th>
+                                <th>desa</th>
+                                <th>jumlah</th>
                                 <?php if (userdata('role_id') == '4') : ?>
-                                    <th data-priority="1">Detail</th>
+                                    <!-- <th data-priority="1">Detail</th> -->
                                 <?php else : ?>
-                                    <th data-priority="1">Action</th>
+                                    <!-- <th data-priority="1">Action</th> -->
                                 <?php endif; ?>
                             </tr>
                         </thead>
@@ -181,7 +111,7 @@
                                 "serverSide": true,
                                 "lengthMenu": [5, 10, 20, 50, 100, 200],
                                 "ajax": {
-                                    "url": "<?= base_url("bankdata_customer/datatable"); ?>",
+                                    "url": "<?= base_url("pengeluarankelompokmakanan/datatable"); ?>",
                                     "type": "POST",
                                     // "data": function(data){
                                     //     data.id_kelompok_pertanyaan = $("#id_kelompok_pertanyaan").find(":selected").val();

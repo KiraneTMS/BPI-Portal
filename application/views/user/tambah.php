@@ -16,11 +16,33 @@
                         <input class="form-control" type="text" name="Email" id="Email" placeholder="Masukan Email" value="<?= set_value("Email"); ?>">
                         <?= form_error("Email", '<small class="text-danger">', '</small>'); ?>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="Password">Password</label>
                         <input class="form-control" type="password" name="Password" id="Password" placeholder="Masukan Password" value="<?= set_value("Password"); ?>">
                         <?= form_error("Password", '<small class="text-danger">', '</small>'); ?>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="Password" id="Password" placeholder="Masukan Password" value="<?= set_value("Password"); ?>" readonly>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-secondary" id="generatePassword">Generate Password</button>
+                            </div>
+                        </div>
+                        <?= form_error("Password", '<small class="text-danger">', '</small>'); ?>
                     </div>
+                    <script>
+                        document.getElementById('generatePassword').addEventListener('click', function() {
+                            var length = 12,
+                                charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()",
+                                password = "";
+                            for (var i = 0, n = charset.length; i < length; ++i) {
+                                password += charset.charAt(Math.floor(Math.random() * n));
+                            }
+                            document.getElementById('Password').value = password;
+                        });
+                    </script>
+
                     <div class="form-group">
                         <label for="IDRole">ID Role</label>
                         <div class="input-group">
@@ -35,7 +57,7 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <?= form_error("IDRole", '<small class="text-danger">','</small>'); ?>
+                        <?= form_error("IDRole", '<small class="text-danger">', '</small>'); ?>
                     </div>
                     <button type="submit" class="btn btn-dark w-100">Submit</button>
                 </form>

@@ -5,7 +5,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class Pengeluarankelompokmakanan extends CI_Controller
+class Pengeluarankelompoknonmakanan extends CI_Controller
 {
 	public function __construct()
     {
@@ -19,59 +19,58 @@ class Pengeluarankelompokmakanan extends CI_Controller
 
 		$data = [
 			"title" => "Detail Data",
-			// 'data' => dbget("pengeluarankelompokmakanan")->result_array()
+			// 'data' => dbget("pengeluarankelompoknonmakanan")->result_array()
 			'data' => []
 		];
 		view('templates/header', $data);
 		view('templates/sidebar');
 		view('templates/topbar');
-		view('pengeluarankelompokmakanan/index', $data);
+		view('pengeluarankelompoknonmakanan/index', $data);
 		view('templates/footer');
 	}
 
 	public function downloadsql()
-{
-    $this->load->dbutil();
-    $this->load->helper('file');
-    $this->load->helper('download');
+	{
+		$this->load->dbutil();
+		$this->load->helper('file');
+		$this->load->helper('download');
 
-    // Define preferences for the backup
-    $prefs = array(
-        'tables'        => array('pengeluarankelompokmakanan'),   // Array of tables to backup, [] means all tables
-        'ignore'        => array(),   // List of tables to omit from the backup
-        'format'        => 'txt',     // Backup file format: gzip, zip, txt
-        'filename'      => 'Pengeluaran Kelompok Makanan.sql', // File name - NEEDED ONLY WITH ZIP FILES
-        'add_drop'      => TRUE,      // Whether to add DROP TABLE statements to backup file
-        'add_insert'    => TRUE,      // Whether to add INSERT data to backup file
-        'newline'       => "\n"       // Newline character used in backup file
-    );
+		// Define preferences for the backup
+		$prefs = array(
+			'tables'        => array('pengeluarankelompoknonmakanan'),   // Array of tables to backup, [] means all tables
+			'ignore'        => array(),   // List of tables to omit from the backup
+			'format'        => 'txt',     // Backup file format: gzip, zip, txt
+			'filename'      => 'Pengeluaran Kelompok Non-Makanan.sql', // File name - NEEDED ONLY WITH ZIP FILES
+			'add_drop'      => TRUE,      // Whether to add DROP TABLE statements to backup file
+			'add_insert'    => TRUE,      // Whether to add INSERT data to backup file
+			'newline'       => "\n"       // Newline character used in backup file
+		);
 
-    // Create the backup
-    $backup = $this->dbutil->backup($prefs);
+		// Create the backup
+		$backup = $this->dbutil->backup($prefs);
 
-    // Save the backup file to the server
-    $backup_file = './backups/Pengeluaran Kelompok Makanan.sql';
-    if (!write_file($backup_file, $backup)) {
-        echo 'Unable to write the file';
-    } else {
-        // Log the download activity
-        $activity_description = "Downloaded SQL backup for Pengeluaran Kelompok Makanan";
-        $user_id = $this->session->userdata('user_id'); // Assuming user_id is stored in session
-        $this->add_aktivitas($activity_description, $user_id);
-
-        // Prompt download of the file
-        force_download($backup_file, NULL);
-    }
-}
+		// Save the backup file to the server
+		$backup_file = './backups/Pengeluaran Kelompok Non-Makanan.sql';
+		if (!write_file($backup_file, $backup)) {
+			echo 'Unable to write the file';
+		} else {
+			// Log the download activity
+			$activity_description = "Downloaded SQL backup for Pengeluaran Kelompok Non Makanan";
+			$user_id = $this->session->userdata('user_id'); // Assuming user_id is stored in session
+			$this->add_aktivitas($activity_description, $user_id);
+			// Prompt download of the file
+			force_download($backup_file, NULL);
+		}
+	}
 
 	public function datatable()
 	{
 		check_rule(false, "is_read", true);
 
-		loadmodel('Pengeluarankelompokmakanan_model');
+		loadmodel('Pengeluarankelompoknonmakanan_model');
 		$show = [];
-		$i = (post('order')[0]['column'] == 0) ? ((post('order')[0]['dir'] == "asc") ? post("start") + 1 : $this->Pengeluarankelompokmakanan_model->get_all_data() - post("start")) : "-";
-		foreach ($this->Pengeluarankelompokmakanan_model->datatable() as $key) {
+		$i = (post('order')[0]['column'] == 0) ? ((post('order')[0]['dir'] == "asc") ? post("start") + 1 : $this->Pengeluarankelompoknonmakanan_model->get_all_data() - post("start")) : "-";
+		foreach ($this->Pengeluarankelompoknonmakanan_model->datatable() as $key) {
 			$data = [];
 			$data[] = (post('order')[0]['column'] == 0) ? ((post('order')[0]['dir'] == "asc") ? $i++ : $i--) : "-";
 			// $data[] = $key['no_tx_penjualan'];
@@ -101,33 +100,28 @@ class Pengeluarankelompokmakanan extends CI_Controller
 						$data[] = $key['jumlah'];
 			// $action = '';
 			// if (check_rule(false, "is_read")) {
-			// 	$action .= '<a href="' . base_url("pengeluarankelompokmakanan/detail/" . $key['id']) . '" class="badge badge-info">
+			// 	$action .= '<a href="' . base_url("pengeluarankelompoknonmakanan/detail/" . $key['id']) . '" class="badge badge-info">
 			// 					<i class="mt-1 mr-1 mb-1 ml-1 fas fa-eye"></i>
 			// 				</a>&nbsp';
 			// }
 			// if (check_rule(false, "is_update")) {
-			// 	$action .= '<a href="' . base_url("pengeluarankelompokmakanan/update/" . $key['id']) . '" class="badge badge-dark">
+			// 	$action .= '<a href="' . base_url("pengeluarankelompoknonmakanan/update/" . $key['id']) . '" class="badge badge-dark">
 			// 					<i class="mt-1 mr-1 mb-1 ml-1 fas fa-edit"></i>
 			// 				</a>&nbsp';
 			// }
 			// if (check_rule(false, "is_delete")) {
-			// 	$action .= '<a href="#" data-href="' . base_url("pengeluarankelompokmakanan/delete/" . $key['id']) . '" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
+			// 	$action .= '<a href="#" data-href="' . base_url("pengeluarankelompoknonmakanan/delete/" . $key['id']) . '" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
 			// 					<i class="mt-1 mr-1 mb-1 ml-1 fas fa-trash"></i>
 			// 				</a>';
 			// }
 			// $data[] = $action;
 			array_push($show, $data);
-
-			// Log the activity
-			$activity_description = "Viewed data for kelompok: " . $key['kelompok'];
-			$user_id = $this->session->userdata('user_id'); // Assuming user_id is stored in session
-			$this->add_aktivitas($activity_description, $user_id);
 		}
 		$data = [
 			"draw" => post("draw"),
 			"data" => $show,
-			"recordsFiltered" => $this->Pengeluarankelompokmakanan_model->get_filtered_data(),
-			"recordsTotal" => $this->Pengeluarankelompokmakanan_model->get_all_data()
+			"recordsFiltered" => $this->Pengeluarankelompoknonmakanan_model->get_filtered_data(),
+			"recordsTotal" => $this->Pengeluarankelompoknonmakanan_model->get_all_data()
 		];
 		echo json_encode($data, JSON_PRETTY_PRINT);
 		// echo json_encode($_POST, JSON_PRETTY_PRINT);
@@ -139,12 +133,12 @@ class Pengeluarankelompokmakanan extends CI_Controller
 		check_rule(false, "is_read", true);
 		$data = [
 			"title" => "Detail Data",
-			"data" => dbgetwhere('pengeluarankelompokmakanan', ['id' => $id])->row_array(),
+			"data" => dbgetwhere('pengeluarankelompoknonmakanan', ['id' => $id])->row_array(),
 		];
 		view('templates/header', $data);
 		view('templates/sidebar');
 		view('templates/topbar');
-		view('pengeluarankelompokmakanan/detail');
+		view('pengeluarankelompoknonmakanan/detail');
 		view('templates/footer');
 	}
 
@@ -236,7 +230,7 @@ class Pengeluarankelompokmakanan extends CI_Controller
 			view('templates/header', $data);
 			view('templates/sidebar');
 			view('templates/topbar');
-			view('pengeluarankelompokmakanan/tambah');
+			view('pengeluarankelompoknonmakanan/tambah');
 			view('templates/footer');
 		} else {
 			$data = [
@@ -317,12 +311,12 @@ class Pengeluarankelompokmakanan extends CI_Controller
 				"PTPAmount" => post("PTPAmount"),
 				"PaidDate" => post("PaidDate"),
 				"PaidAmount" => post("PaidAmount"),
-				"preated_user_Pengeluarankelompokmakanan" => userdata('id_user'),
+				"preated_user_Pengeluarankelompoknonmakanan" => userdata('id_user'),
 			];
 
-			dbinsert("pengeluarankelompokmakanan", $data);
+			dbinsert("pengeluarankelompoknonmakanan", $data);
 			set_flashdata("msg", swalfire('Data Berhasil Dimasukan'));
-			redirect(base_url("pengeluarankelompokmakanan/index"));
+			redirect(base_url("pengeluarankelompoknonmakanan/index"));
 		}
 	}
 
@@ -410,12 +404,12 @@ class Pengeluarankelompokmakanan extends CI_Controller
 		if ($this->form_validation->run() == False) {
 			$data = [
 				"title" => "Bank Data Customer",
-				"data" => dbgetwhere("pengeluarankelompokmakanan", ["id" => $id])->row_array(),
+				"data" => dbgetwhere("pengeluarankelompoknonmakanan", ["id" => $id])->row_array(),
 			];
 			view('templates/header', $data);
 			view('templates/sidebar');
 			view('templates/topbar');
-			view('pengeluarankelompokmakanan/update');
+			view('pengeluarankelompoknonmakanan/update');
 			view('templates/footer');
 		} else {
 			$data = [
@@ -498,9 +492,9 @@ class Pengeluarankelompokmakanan extends CI_Controller
 				"PaidAmount" => post("PaidAmount"),
 			];
 
-			dbupdate("pengeluarankelompokmakanan", $data, ['id' => $id]);
+			dbupdate("pengeluarankelompoknonmakanan", $data, ['id' => $id]);
 			set_flashdata("msg", swalfire('Data Berhasil Diubah'));
-			redirect(base_url("pengeluarankelompokmakanan/index"));
+			redirect(base_url("pengeluarankelompoknonmakanan/index"));
 		}
 	}
 
@@ -508,9 +502,9 @@ class Pengeluarankelompokmakanan extends CI_Controller
 	public function delete($id)
 	{
 		check_rule(false, "is_delete", true);
-		dbdelete("pengeluarankelompokmakanan", ["pd_Pengeluarankelompokmakanan" => $id]);
+		dbdelete("pengeluarankelompoknonmakanan", ["pd_Pengeluarankelompoknonmakanan" => $id]);
 		set_flashdata("msg", swalfire('Data Berhasil Dihapus', 'success'));
-		redirect(base_url("pengeluarankelompokmakanan/index"));
+		redirect(base_url("pengeluarankelompoknonmakanan/index"));
 	}
 
 	public function delete_selected()
@@ -520,10 +514,10 @@ class Pengeluarankelompokmakanan extends CI_Controller
 
 		$list = post('id');
 		foreach ($list as $id) {
-			dbdelete("pengeluarankelompokmakanan", ["id" => $id]);
+			dbdelete("pengeluarankelompoknonmakanan", ["id" => $id]);
 		}
 		echo '200';
 		// set_flashdata("msg", swalfire('Data Berhasil Dihapus', 'success'));
-		// redirect(base_url("pengeluarankelompokmakanan/index"));
+		// redirect(base_url("pengeluarankelompoknonmakanan/index"));
 	}
 }

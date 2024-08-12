@@ -7,6 +7,7 @@ class Auth extends CI_controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model('Aktivitas_model');
     }
     public function index()
     {
@@ -31,6 +32,9 @@ class Auth extends CI_controller
                     set_userdata("name", $dbget['Name']);
                     set_userdata("email", $dbget['Email']);
                     set_userdata("id_user", $dbget['IDUser']);
+
+                    // Add activity
+                    $this->Aktivitas_model->add_aktivitas('User logged in', $dbget['IDUser']); // Pass user ID
                     // set_userdata("id_perusahaan", $dbget['id_perusahaan']);
                     // // set_userdata("nama_perusahaan", dbgetwhere("tb_perusahaan", ['id_perusahaan' => $dbget['id_perusahaan']])->row_array()['nama_perusahaan']);
                     set_userdata("role_id", $dbget['IDRole']);

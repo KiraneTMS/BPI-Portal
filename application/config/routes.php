@@ -54,3 +54,5 @@ $route['default_controller'] = 'auth';
 // $route['default_controller'] = 'dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+$route['email/send_mail'] = 'emailcontroller/send_mail';
+$route['aktivitas/download'] = 'aktivitas/download';

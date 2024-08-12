@@ -5,64 +5,31 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class Pengeluarankelompokmakanan extends CI_Controller
+class Listdata extends CI_Controller
 {
-	public function __construct()
-    {
+
+	public function __construct() {
         parent::__construct();
-        $this->load->model('Aktivitas_model');
+        $this->load->model('Data_model');
+        // Optional: Check user permissions or other conditions
+        check_rule(false, "is_read", true);
     }
 
 	public function index()
 	{
-		check_rule(false, "is_read", true);
+		// Fetch data from the model
+        $data['data'] = $this->Data_model->getData();
 
-		$data = [
-			"title" => "Detail Data",
-			// 'data' => dbget("pengeluarankelompokmakanan")->result_array()
-			'data' => []
-		];
+        // Prepare other data for the view
+        $data['title'] = "Detail Data";
+		
 		view('templates/header', $data);
 		view('templates/sidebar');
 		view('templates/topbar');
-		view('pengeluarankelompokmakanan/index', $data);
+		view('listdata/index', $data);
 		view('templates/footer');
 	}
 
-	public function downloadsql()
-{
-    $this->load->dbutil();
-    $this->load->helper('file');
-    $this->load->helper('download');
-
-    // Define preferences for the backup
-    $prefs = array(
-        'tables'        => array('pengeluarankelompokmakanan'),   // Array of tables to backup, [] means all tables
-        'ignore'        => array(),   // List of tables to omit from the backup
-        'format'        => 'txt',     // Backup file format: gzip, zip, txt
-        'filename'      => 'Pengeluaran Kelompok Makanan.sql', // File name - NEEDED ONLY WITH ZIP FILES
-        'add_drop'      => TRUE,      // Whether to add DROP TABLE statements to backup file
-        'add_insert'    => TRUE,      // Whether to add INSERT data to backup file
-        'newline'       => "\n"       // Newline character used in backup file
-    );
-
-    // Create the backup
-    $backup = $this->dbutil->backup($prefs);
-
-    // Save the backup file to the server
-    $backup_file = './backups/Pengeluaran Kelompok Makanan.sql';
-    if (!write_file($backup_file, $backup)) {
-        echo 'Unable to write the file';
-    } else {
-        // Log the download activity
-        $activity_description = "Downloaded SQL backup for Pengeluaran Kelompok Makanan";
-        $user_id = $this->session->userdata('user_id'); // Assuming user_id is stored in session
-        $this->add_aktivitas($activity_description, $user_id);
-
-        // Prompt download of the file
-        force_download($backup_file, NULL);
-    }
-}
 
 	public function datatable()
 	{
@@ -117,11 +84,6 @@ class Pengeluarankelompokmakanan extends CI_Controller
 			// }
 			// $data[] = $action;
 			array_push($show, $data);
-
-			// Log the activity
-			$activity_description = "Viewed data for kelompok: " . $key['kelompok'];
-			$user_id = $this->session->userdata('user_id'); // Assuming user_id is stored in session
-			$this->add_aktivitas($activity_description, $user_id);
 		}
 		$data = [
 			"draw" => post("draw"),
@@ -139,12 +101,12 @@ class Pengeluarankelompokmakanan extends CI_Controller
 		check_rule(false, "is_read", true);
 		$data = [
 			"title" => "Detail Data",
-			"data" => dbgetwhere('pengeluarankelompokmakanan', ['id' => $id])->row_array(),
+			"data" => dbgetwhere('listdata', ['id' => $id])->row_array(),
 		];
 		view('templates/header', $data);
 		view('templates/sidebar');
 		view('templates/topbar');
-		view('pengeluarankelompokmakanan/detail');
+		view('listdata/detail');
 		view('templates/footer');
 	}
 

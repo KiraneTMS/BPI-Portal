@@ -1,150 +1,104 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 // require 'vendor/autoload.php';
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class Pengeluarankelompokmakanan extends CI_Controller
+class Aktivitas extends CI_Controller
 {
-	public function __construct()
-    {
+
+	public function __construct() {
         parent::__construct();
         $this->load->model('Aktivitas_model');
+		$this->load->library('session');
+        $this->load->database();
     }
 
 	public function index()
 	{
-		check_rule(false, "is_read", true);
+		// Fetch data from the model
+        $data['logs'] = $this->Aktivitas_model->get_logs();
 
-		$data = [
-			"title" => "Detail Data",
-			// 'data' => dbget("pengeluarankelompokmakanan")->result_array()
-			'data' => []
-		];
+        // Prepare other data for the view
+        $data['title'] = "Riwayat Aktivas Pengguna";
+		
 		view('templates/header', $data);
 		view('templates/sidebar');
 		view('templates/topbar');
-		view('pengeluarankelompokmakanan/index', $data);
+		view('aktivitas/index', $data);
 		view('templates/footer');
 	}
 
-	public function downloadsql()
-{
-    $this->load->dbutil();
-    $this->load->helper('file');
-    $this->load->helper('download');
 
-    // Define preferences for the backup
-    $prefs = array(
-        'tables'        => array('pengeluarankelompokmakanan'),   // Array of tables to backup, [] means all tables
-        'ignore'        => array(),   // List of tables to omit from the backup
-        'format'        => 'txt',     // Backup file format: gzip, zip, txt
-        'filename'      => 'Pengeluaran Kelompok Makanan.sql', // File name - NEEDED ONLY WITH ZIP FILES
-        'add_drop'      => TRUE,      // Whether to add DROP TABLE statements to backup file
-        'add_insert'    => TRUE,      // Whether to add INSERT data to backup file
-        'newline'       => "\n"       // Newline character used in backup file
-    );
+	public function tindakan() {
+        // Log aktivitas ketika pengguna melakukan suatu tindakan
+        $name = $this->session->userdata('name'); // ID user dari session
+        $aktivitas = 'User melakukan';
 
-    // Create the backup
-    $backup = $this->dbutil->backup($prefs);
+        $this->Aktivitas_model->log_aktivitas($nama, $aktivitas);
 
-    // Save the backup file to the server
-    $backup_file = './backups/Pengeluaran Kelompok Makanan.sql';
-    if (!write_file($backup_file, $backup)) {
-        echo 'Unable to write the file';
-    } else {
-        // Log the download activity
-        $activity_description = "Downloaded SQL backup for Pengeluaran Kelompok Makanan";
-        $user_id = $this->session->userdata('user_id'); // Assuming user_id is stored in session
-        $this->add_aktivitas($activity_description, $user_id);
-
-        // Prompt download of the file
-        force_download($backup_file, NULL);
+        // Lakukan tindakan lainnya...
     }
-}
 
-	public function datatable()
+	public function download()
 	{
-		check_rule(false, "is_read", true);
+		// Ambil data dari database
+		$data = $this->Aktivitas_model->get_data();
 
-		loadmodel('Pengeluarankelompokmakanan_model');
-		$show = [];
-		$i = (post('order')[0]['column'] == 0) ? ((post('order')[0]['dir'] == "asc") ? post("start") + 1 : $this->Pengeluarankelompokmakanan_model->get_all_data() - post("start")) : "-";
-		foreach ($this->Pengeluarankelompokmakanan_model->datatable() as $key) {
-			$data = [];
-			$data[] = (post('order')[0]['column'] == 0) ? ((post('order')[0]['dir'] == "asc") ? $i++ : $i--) : "-";
-			// $data[] = $key['no_tx_penjualan'];
-			// $data[] = date("d-m-Y", strtotime($key['tanggal_transaksi_penjualan']));
-			// $data[] = $key['nama_customer'];
-			// $data[] = ($key['id_kontrak_customer'] == 0) ? "" : dbgetwhere("kontrak_customer", ['id_kontrak_customer' => $key['id_kontrak_customer']])->row_array()['nomor_kontrak_customer'];
-			// $data[] = $key['nama_perusahaan'];
-			// $data[] = $key['simbol_mata_uang'];
-			// $data[] = rupiah($key['total_ppn_penjualan']);
-			// $data[] = rupiah($key['grand_total_penjualan']);
-			// $data[] = rupiah($key['total_penjualan']);
-			// $data[] = $key['nama_status_penjualan'];
-			// $data[] = $key['keterangan_penjualan'];
-
-			if (check_rule(false, "is_delete")) {
-			// 	$data[] = '<div class="form-check">
-			// 	<input class="form-check-input checkbox" data-id="' . $key['id'] . '" type="checkbox" value="" id="selectall">
-			// 	<label class="form-check-label" for="selectall"></label>
-			// </div>';
-			} else {
-				// $data[] = "";
-			}
-						// $data[] = $key['id'];	
-						$data[] = $key['kelompok'];	
-						$data[] = $key['kota'];	
-						$data[] = $key['desa'];	
-						$data[] = $key['jumlah'];
-			// $action = '';
-			// if (check_rule(false, "is_read")) {
-			// 	$action .= '<a href="' . base_url("pengeluarankelompokmakanan/detail/" . $key['id']) . '" class="badge badge-info">
-			// 					<i class="mt-1 mr-1 mb-1 ml-1 fas fa-eye"></i>
-			// 				</a>&nbsp';
-			// }
-			// if (check_rule(false, "is_update")) {
-			// 	$action .= '<a href="' . base_url("pengeluarankelompokmakanan/update/" . $key['id']) . '" class="badge badge-dark">
-			// 					<i class="mt-1 mr-1 mb-1 ml-1 fas fa-edit"></i>
-			// 				</a>&nbsp';
-			// }
-			// if (check_rule(false, "is_delete")) {
-			// 	$action .= '<a href="#" data-href="' . base_url("pengeluarankelompokmakanan/delete/" . $key['id']) . '" class="badge badge-danger" data-toggle="modal" data-target="#confirm-delete">
-			// 					<i class="mt-1 mr-1 mb-1 ml-1 fas fa-trash"></i>
-			// 				</a>';
-			// }
-			// $data[] = $action;
-			array_push($show, $data);
-
-			// Log the activity
-			$activity_description = "Viewed data for kelompok: " . $key['kelompok'];
-			$user_id = $this->session->userdata('user_id'); // Assuming user_id is stored in session
-			$this->add_aktivitas($activity_description, $user_id);
+		if (empty($data)) {
+			// Handle case where no data is returned
+			show_error('No data available for download.');
+			return;
 		}
-		$data = [
-			"draw" => post("draw"),
-			"data" => $show,
-			"recordsFiltered" => $this->Pengeluarankelompokmakanan_model->get_filtered_data(),
-			"recordsTotal" => $this->Pengeluarankelompokmakanan_model->get_all_data()
-		];
-		echo json_encode($data, JSON_PRETTY_PRINT);
-		// echo json_encode($_POST, JSON_PRETTY_PRINT);
-	}
 
+		// Buat objek Spreadsheet
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+
+		// Set the column headers
+		$sheet->setCellValue('A1', 'Name');
+		$sheet->setCellValue('B1', 'Aktivitas');
+		$sheet->setCellValue('C1', 'Dibuat');
+
+		// Isi data ke sel
+		$row = 2;
+		foreach ($data as $dataItem) {
+			// Access data as associative array
+			$sheet->setCellValue('A' . $row, $dataItem['name'] ?? '');
+			$sheet->setCellValue('B' . $row, $dataItem['aktivitas'] ?? '');
+			$sheet->setCellValue('C' . $row, $dataItem['dibuat'] ?? '');
+			$row++;
+		}
+
+		// Set nama file dan simpan
+		$filename = 'Data_Excel_' . date('YmdHis') . '.xlsx';
+
+		$writer = new Xlsx($spreadsheet);
+
+		// Set headers and save the file
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment; filename="' . $filename . '"');
+		header('Cache-Control: max-age=0');
+
+		$writer->save('php://output');
+		exit(); // Ensure no additional output is sent
+	}
 
 	public function detail($id)
 	{
 		check_rule(false, "is_read", true);
 		$data = [
-			"title" => "Detail Data",
-			"data" => dbgetwhere('pengeluarankelompokmakanan', ['id' => $id])->row_array(),
+			"title" => "Riwayat Aktivitas Pengguna",
+			"data" => dbgetwhere('listdata', ['id' => $id])->row_array(),
 		];
 		view('templates/header', $data);
 		view('templates/sidebar');
 		view('templates/topbar');
-		view('pengeluarankelompokmakanan/detail');
+		view('aktivitas/detail');
 		view('templates/footer');
 	}
 

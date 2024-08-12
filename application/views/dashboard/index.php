@@ -17,6 +17,12 @@
             </div>
         </div>
     </div>
+    
+    <!-- <button id="sendMailButton" class="btn btn-primary">Send Email</button> -->
+    <!-- <?php
+    echo function_exists('mail') ? 'mail() function is available' : 'mail() function is not available';
+    ?> -->
+
 
     <!-- <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
@@ -381,3 +387,30 @@
 
     </div> -->
 </div>
+<script>
+document.getElementById('sendMailButton').addEventListener('click', function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '<?= base_url('emailcontroller/send_mail') ?>', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            try {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    alert('Email sent successfully!');
+                } else {
+                    alert('Failed to send email: ' + response.error);
+                }
+            } catch (e) {
+                alert('Error parsing response: ' + xhr.responseText);
+            }
+        } else {
+            alert('Failed to send email. Status: ' + xhr.status + ' Response: ' + xhr.responseText);
+        }
+    };
+    xhr.onerror = function() {
+        alert('Network error occurred.');
+    };
+    xhr.send();
+});
+</script>

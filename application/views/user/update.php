@@ -19,6 +19,9 @@
                     <div class="form-group">
                         <label for="Password">Password</label>
                         <input class="form-control" type="password" name="Password" id="Password" placeholder="Masukan Password" value="">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-secondary" id="generatePassword">Generate Password</button>
+                        </div>
                         <?= form_error("Password", '<small class="text-danger">', '</small>'); ?>
                     </div>
                     <div class="form-group">
@@ -43,3 +46,14 @@
         </div>
     </div>
 </div>
+<script>
+                        document.getElementById('generatePassword').addEventListener('click', function() {
+                            var length = 12,
+                                charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()",
+                                password = "";
+                            for (var i = 0, n = charset.length; i < length; ++i) {
+                                password += charset.charAt(Math.floor(Math.random() * n));
+                            }
+                            document.getElementById('Password').value = password;
+                        });
+                    </script>
